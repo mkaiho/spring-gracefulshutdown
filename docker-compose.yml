@@ -1,0 +1,17 @@
+version: '3.7'
+
+# Environment variables for workspace
+x-app-working-dir: &APP_WORKING_DIR
+  "/home/spring-gracefulshutdown"
+x-app-project-volume: &APP_PROJECT_VOLUME
+  ".:/home/spring-gracefulshutdown"
+
+services:
+  workspace:
+    build:
+      context: ./docker/workspace
+    container_name: workspace
+    volumes:
+      - *APP_PROJECT_VOLUME
+    working_dir: *APP_WORKING_DIR
+    tty: true
