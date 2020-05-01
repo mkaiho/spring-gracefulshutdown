@@ -1,4 +1,4 @@
-FROM mysql:8.0.20
+FROM mysql:8.0.17
 
 RUN apt-get update -qq -y && \
 apt-get install -y locales \
