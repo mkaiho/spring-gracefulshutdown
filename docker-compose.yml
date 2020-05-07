@@ -5,6 +5,12 @@ x-app-working-dir: &APP_WORKING_DIR
   "/home/spring-gracefulshutdown"
 x-app-project-volume: &APP_PROJECT_VOLUME
   ".:/home/spring-gracefulshutdown"
+# Environment variables for mysql database
+x-mysqldb-environment: &MYSQLDB_ENVIRONMENT
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_DATABASE: devdb
+  MYSQL_USER: devuser
+  MYSQL_PASSWORD: devdev
 
 services:
   workspace:
@@ -15,3 +21,14 @@ services:
       - *APP_PROJECT_VOLUME
     working_dir: *APP_WORKING_DIR
     tty: true
+  mysqldb-local:
+    build:
+      context: ./docker/mysqldb
+    container_name: mysqldb-local
+    ports:
+      - 13306:3306
+    volumes:
+      - ./docker/mysqldb/init.d:/docker-entrypoint-initdb.d
+      - ./docker/mysqldb/conf.d:/etc/mysql/conf.d
+      - ./docker/mysqldb/data:/var/lib/mysql
+    environment: *MYSQLDB_ENVIRONMENT

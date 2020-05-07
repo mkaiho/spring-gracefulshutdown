@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sample-app
+  name: sample-app-deploy
+  namespace: mkaiho-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-app
+  template:
+    metadata:
+      labels:
+        app: sample-app
+    spec:
+      containers:
+      - image: mkaiho/spring-gracefulshutdown:1.0
+        name: sample-app
+        env:
+        - name: SCHEDULING_SHUTDOWN_AWAIT_TIME
+          valueFrom:
+            configMapKeyRef:
+              name: sample-app-config
+              key: scheduling.shutdown-await-time
+        - name: DB_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: sample-app-config
+              key: datasource.url
+        - name: DB_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: sample-app-config
+              key: datasource.username
+        - name: DB_DATASOURCE_DRIVER_CLASS
+          valueFrom:
+            configMapKeyRef:
+              name: sample-app-config
+              key: datasource.driver-class
+        - name: APP_LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: sample-app-config
+              key: app.log-level
+        - name: SCHEDULER_ENABLE
+          valueFrom:
+            configMapKeyRef:
+              name: sample-app-config
+              key: scheduler.enable
+        - name: APP_CRON_TZ
+          valueFrom:
+            configMapKeyRef:
+              name: sample-app-config
+              key: app.cron.tz
+        - name: APP_CRON_USER_ECHO_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: sample-app-config
+              key: app.cron.user-echo-name
+        - name: DB_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sample-app-db-secret
+              key: password
+      terminationGracePeriodSeconds: 30
