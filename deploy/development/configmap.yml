@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sample-app-config
+  namespace: mkaiho-dev
+data:
+  scheduling.shutdown-await-time: "30s"
+  datasource.url: "jdbc:mysql://<HOST>:<PORT>/<DB_NAME>"
+  datasource.username: "devuser"
+  datasource.driver-class: "com.mysql.cj.jdbc.Driver"
+  app.log-level: "INFO"
+  scheduler.enable: "true"
+  app.cron.tz: "Asia/Tokyo"
+  app.cron.user-echo-name: "* * * * * *"

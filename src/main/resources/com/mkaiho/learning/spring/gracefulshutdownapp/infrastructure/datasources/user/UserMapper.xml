@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mkaiho.learning.spring.gracefulshutdownapp.infrastructure.datasources.user.UserMapper">
+    <resultMap id="user" type="com.mkaiho.learning.spring.gracefulshutdownapp.domain.models.user.User">
+        <id property="id.value" column="user_id"/>
+        <result property="name" column="user_name"/>
+    </resultMap>
+
+    <sql id="userColumns">
+        id as user_id,
+        name as user_name,
+        sleep(5)
+    </sql>
+
+    <select id="findAllSlowly" resultMap="user">
+        select
+        <include refid="userColumns"/>
+        from users
+        ORDER BY users.id ASC
+    </select>
+</mapper>
